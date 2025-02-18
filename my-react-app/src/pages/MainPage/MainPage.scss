@@ -1,0 +1,50 @@
+.mainContainer {
+  background-color: #c8c8c8;
+  height: 812px;
+  width: 1440px;
+  display: flex;
+  flex-direction: column;
+  &__topLine {
+    display: flex;
+    height: 60px;
+    width: 100%;
+    border-bottom: 1px solid white;
+    align-items: center;
+    justify-content: center;
+    gap: 240px;
+    margin-top: -65px;
+    &__switchButtons,
+    &__switchButtonActive,
+    &__switchButtonsActive {
+      color: white;
+      background-color: #c8c8c8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      width: 300px;
+      border: none;
+      border-radius: 0;
+      font-size: 27px;
+      outline: none;
+      &:focus {
+        outline: none;
+        box-shadow: none;
+      }
+    }
+    &__switchButtonsActive {
+      color: black;
+      text-shadow: 0 0 7px rgba(0, 0, 0, 1);
+    }
+    &__liked {
+      position: absolute;
+      height: 40px;
+    }
+  }
+  &__animalCard {
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

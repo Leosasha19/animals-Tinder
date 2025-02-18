@@ -1,0 +1,88 @@
+.AnimalCard {
+  border: 1px solid #919090;
+  border-radius: 10px;
+  height: 650px;
+  width: 600px;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  &__picture {
+    height: 500px;
+    width: 550px;
+    border-radius: 10px;
+    margin-top: -10px;
+  }
+  &__estimateBox {
+    display: flex;
+    justify-content: space-around;
+    width: 550px;
+    height: 80px;
+    margin-top: 20px;
+    &__like,
+    &__dislike,
+    &__mood {
+      width: 80px;
+      height: 80px;
+      background-color: white;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      border: none;
+      outline: none;
+    }
+    &__like {
+      background-image: url("/animals-Tinder/my-react-appng");
+    }
+    &__mood {
+      background-image: url("/animals-Tinder/my-react-appng");
+    }
+    &__dislike {
+      background-image: url("/animals-Tinder/my-react-appe.png");
+    }
+    &__like:hover,
+    &__like:active,
+    &__like:focus,
+    &__mood:hover,
+    &__mood:active,
+    &__mood:focus,
+    &__dislike:hover,
+    &__dislike:active,
+    &__dislike:focus {
+      outline: none;
+      background-color: #f3f2f2;
+    }
+  }
+  &__estimateBoxNone {
+    display: none;
+  }
+}
+.popUpBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  background-color: #dcdbdb;
+  width: 509px;
+  height: 50px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+  input {
+    width: 250px;
+    border: 0.5px solid #bcb9b9;
+    border-radius: 5px;
+    height: 30px;
+    padding-left: 11px;
+  }
+  button {
+    height: 34px;
+    background-color: #7d84f6;
+    width: 210px;
+    border: 0.5px solid #bcb9b9;
+    border-radius: 5px;
+    padding: 0;
+  }
+}
