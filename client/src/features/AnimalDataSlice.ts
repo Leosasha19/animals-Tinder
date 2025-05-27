@@ -12,14 +12,14 @@ export interface Animal {
 
 export interface AnimalsState {
  animals: Animal[];
- currentAnimal: Animal;
+ currentAnimal: Animal | null;
  error: string;
  loading: boolean;
 }
 
 const initialState: AnimalsState = {
  animals: [],
- currentAnimal: {id: null, imageURL: "", comment: "", isACat: null, like: null},
+ currentAnimal: null,
  error: "",
  loading: false,
 }
@@ -91,17 +91,23 @@ export const AnimalsStateSlice = createSlice({
   initialState: initialState,
   reducers : {
        changeLikeStatus: (state, action) => {
-           state.currentAnimal.like = action.payload;
+           if(state.currentAnimal) {
+               state.currentAnimal.like = action.payload;
+           }
        },
       addComment: (state, action) => {
-           state.currentAnimal.comment = action.payload;
+           if(state.currentAnimal) {
+               state.currentAnimal.comment = action.payload;
+           }
       },
       addRandomAnimal: (state, action) => {
-           state.currentAnimal.id = action.payload.id;
-           state.currentAnimal.imageURL = action.payload.imageURL;
-           state.currentAnimal.comment = action.payload.comment;
-           state.currentAnimal.isACat = action.payload.isACat;
-           state.currentAnimal.like = action.payload.like;
+           if(state.currentAnimal) {
+               state.currentAnimal.id = action.payload.id;
+               state.currentAnimal.imageURL = action.payload.imageURL;
+               state.currentAnimal.comment = action.payload.comment;
+               state.currentAnimal.isACat = action.payload.isACat;
+               state.currentAnimal.like = action.payload.like;
+           }
       }
   },
  extraReducers: (builder) => {

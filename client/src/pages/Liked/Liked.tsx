@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {useAppDispatch, useAppSelector} from "../../hooks/redux.ts";
-import {addAnimal, addRandomAnimal, getAnimals, selectAnimalsState} from "../../features/AnimalDataSlice.ts";
+import { addRandomAnimal, getAnimals, selectAnimalsState} from "../../features/AnimalDataSlice.ts";
 import './Liked.scss';
 
 const Liked = () => {

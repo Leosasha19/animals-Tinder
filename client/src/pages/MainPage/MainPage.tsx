@@ -2,8 +2,8 @@ import AnimalCard from "../../components/AnimalCard/AnimalCard.tsx";
 import React, {useState} from "react";
 import {getCatApi, getDogApi, selectAnimalsState} from "../../features/AnimalDataSlice.ts";
 import {useNavigate} from "react-router-dom";
-import './MainPage.scss'
 import {useAppSelector} from "../../hooks/redux.ts";
+import './MainPage.scss'
 
 const MainPage = () => {
     const navigate = useNavigate();
