@@ -3,7 +3,6 @@ import {useAppDispatch, useAppSelector} from "../../hooks/redux.ts";
 import {
     addAnimal, addComment, changeLikeStatus,
     getAnimals,
-    getCatApi,
     selectAnimalsState,
     selectCurrentAnimal
 } from "../../features/AnimalDataSlice.ts";
@@ -17,7 +16,7 @@ const AnimalCard: React.FC<AnimalCardProps> = ({fetchAnimal}) => {
     const dispatch = useAppDispatch();
     const animalsState = useAppSelector(selectAnimalsState);
     const currentAnimal =  useAppSelector(selectCurrentAnimal);
-    const blackList = animalsState.animals.some((animal) => animal.imageURL === currentAnimal.imageURL && animal.like === false);
+    const blackList = animalsState.animals.some((animal) => animal.imageURL === currentAnimal?.imageURL && animal.like === false);
     const [showInput, setShowInput] = useState(false);
     const [inputValue, setInputValue] = useState("")
 
@@ -55,10 +54,10 @@ const AnimalCard: React.FC<AnimalCardProps> = ({fetchAnimal}) => {
                 <div className="error-message">{"Упс... Похоже что то сломалось"}</div>
             ) : (
                 <>
-                    {!blackList && (
+                    {!blackList && currentAnimal && (
                         <img
                             className="AnimalCard__picture"
-                            src={currentAnimal.imageURL || null}
+                            src={currentAnimal.imageURL}
                             alt="Тут животное"
                         />
                     )}
