@@ -33,7 +33,17 @@ app.get("/animals", async (req, res) => {
        const animals = await sequelize.query('SELECT * FROM "Animals"', {
            type: Sequelize.QueryTypes.SELECT
        })
-       res.json(animals);
+       const prepearAnimals = animals.map(animal => {
+           return {
+               id: animal.id,
+               name: animal.name,
+               imageURL: animal.urlimg,
+               comment: animal.commentary,
+               isCat: animal.iscat,
+               isLike: animal.like
+           }
+       })
+       res.json(prepearAnimals);
    } catch (error) {
        console.log(error);
        res.status(500).json({error: "Ошибка получения Animals"})
