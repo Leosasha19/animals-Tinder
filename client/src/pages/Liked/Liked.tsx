@@ -2,12 +2,14 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {useAppDispatch, useAppSelector} from "../../hooks/redux.ts";
 import {addAnimal, addRandomAnimal, getAnimals, selectAnimalsState} from "../../features/AnimalDataSlice.ts";
 import './Liked.scss';
+import {useNavigate} from "react-router-dom";
 
 const Liked = () => {
 
     const animalsState = useAppSelector(selectAnimalsState);
     const dispatch = useAppDispatch();
     const [oneRandomAnimal, setOneRandomAnimal] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         dispatch(getAnimals())
@@ -50,6 +52,10 @@ const Liked = () => {
 
     return (
         <div className={"mainContainer"}>
+            <button
+                onClick={() => {navigate('/')}}
+                className={"mainContainer__backButton"}>НАЗАД
+            </button>
             <div className={"mainContainer__animalsBox"}>
                 <img src={animalsState.currentAnimal.imageURL || null} alt=""/>
                 <div>{animalsState.currentAnimal.comment}</div>
