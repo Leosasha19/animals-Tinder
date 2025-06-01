@@ -16,7 +16,7 @@ const AnimalCard: React.FC<AnimalCardProps> = ({fetchAnimal}) => {
     const dispatch = useAppDispatch();
     const animalsState = useAppSelector(selectAnimalsState);
     const currentAnimal =  useAppSelector(selectCurrentAnimal);
-    const blackList = animalsState.animals.some((animal) => animal.imageURL === currentAnimal?.imageURL && animal.like === false);
+    const blackList = animalsState.animals.some((animal) => animal.imageURL === currentAnimal?.imageURL && !animal.isLike);
     const [showInput, setShowInput] = useState(false);
     const [inputValue, setInputValue] = useState("")
 
@@ -32,15 +32,17 @@ const AnimalCard: React.FC<AnimalCardProps> = ({fetchAnimal}) => {
         }
     }, [blackList, dispatch]);
 
-    const likeHandler = useCallback ((isLike, commentary) => {
+    const likeHandler = useCallback ((isLike: boolean, comment: string) => {
          dispatch(changeLikeStatus(true))
-        dispatch(addComment(commentary))
-        dispatch(addAnimal({
-            imageURL: currentAnimal.imageURL,
-            comment: commentary,
-            isACat: currentAnimal.isACat,
-            like: isLike
-        }))
+        dispatch(addComment(comment))
+        if(currentAnimal) {
+            dispatch(addAnimal({
+                imageURL: currentAnimal.imageURL,
+                comment: comment,
+                isCat: currentAnimal.isCat,
+                isLike: isLike
+            }))
+        }
         dispatch(fetchAnimal())
         setShowInput(false);
         setInputValue("");

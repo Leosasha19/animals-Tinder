@@ -6,8 +6,8 @@ export interface Animal {
  id: number;
  imageURL: string;
  comment: string;
- isACat: boolean;
- like: boolean;
+ isCat: boolean;
+ isLike: boolean;
 }
 
 export interface AnimalsState {
@@ -38,10 +38,10 @@ interface DogResponeData {
 
 interface AnimalsResponseData {
     id: number;
-    urlimg: string;
-    commentary: string;
-    iscat: boolean;
-    like: boolean;
+    imageURL: string;
+    comment: string;
+    isCat: boolean;
+    isLike: boolean;
 }
 
 export const getAnimals = createAsyncThunk("animals/getAnimals",
@@ -73,13 +73,13 @@ export const getDogApi = createAsyncThunk("dogs/getDogsApi",
     })
 
 export const addAnimal = createAsyncThunk("animal/addAnimal",
-    async ({imageURL, comment, isACat, like}: {imageURL:string, comment:string, isACat:boolean, like: boolean}, {rejectWithValue}) => {
+    async ({imageURL, comment, isCat, isLike}: {imageURL:string, comment:string, isCat:boolean, isLike: boolean}, {rejectWithValue}) => {
         try {
             await axios.post("http://localhost:5001/animals", {
                 imageURL,
                 comment,
-                isACat,
-                like
+                isCat,
+                isLike
             })
         } catch (error) {
             return rejectWithValue(error.response?.data || "Ошибка добавления животного в БД")
@@ -92,7 +92,7 @@ export const AnimalsStateSlice = createSlice({
   reducers : {
        changeLikeStatus: (state, action) => {
            if(state.currentAnimal) {
-               state.currentAnimal.like = action.payload;
+               state.currentAnimal.isLike = action.payload;
            }
        },
       addComment: (state, action) => {
@@ -101,13 +101,7 @@ export const AnimalsStateSlice = createSlice({
            }
       },
       addRandomAnimal: (state, action) => {
-           if(state.currentAnimal) {
-               state.currentAnimal.id = action.payload.id;
-               state.currentAnimal.imageURL = action.payload.imageURL;
-               state.currentAnimal.comment = action.payload.comment;
-               state.currentAnimal.isACat = action.payload.isACat;
-               state.currentAnimal.like = action.payload.like;
-           }
+           state.currentAnimal = action.payload;
       }
   },
  extraReducers: (builder) => {
@@ -115,11 +109,11 @@ export const AnimalsStateSlice = createSlice({
         .addCase(getAnimals.pending, (state) => {
             state.loading = true;
         })
-        .addCase(getAnimals.fulfilled, (state, action: PayloadAction<AnimalsResponseData>) => {
+        .addCase(getAnimals.fulfilled, (state, action: PayloadAction<AnimalsResponseData[]>) => {
             state.loading = false;
             state.animals = action.payload
      })
-        .addCase(getAnimals.rejected, (state, action: PayloadAction<string>) => {
+        .addCase(getAnimals.rejected, (state, action: PayloadAction<unknown>) => {
             state.loading = false;
             state.error = action.payload;
         })
@@ -132,8 +126,8 @@ export const AnimalsStateSlice = createSlice({
                 id: null,
                 imageURL: action.payload.url,
                 comment: '',
-                isACat: true,
-                like: null,
+                isCat: true,
+                isLike: null,
             };
         })
         .addCase(getDogApi.pending, (state) => {
@@ -145,15 +139,15 @@ export const AnimalsStateSlice = createSlice({
                 id: null,
                 imageURL: action.payload.message,
                 comment: '',
-                isACat: false,
-                like: null,
+                isCat: false,
+                isLike: null,
             }
         })
-        .addCase(getDogApi.rejected, (state, action: PayloadAction<string>) => {
+        .addCase(getDogApi.rejected, (state, action: PayloadAction<unknown>) => {
             state.loading = false;
             state.error = action.payload;
         })
-        .addCase(getCatApi.rejected, (state, action: PayloadAction<string>) => {
+        .addCase(getCatApi.rejected, (state, action: PayloadAction<unknown>) => {
             state.loading = false;
             state.error = action.payload;
         })
@@ -164,7 +158,7 @@ export const AnimalsStateSlice = createSlice({
             state.loading = false;
             state.currentAnimal = initialState.currentAnimal;
         })
-        .addCase(addAnimal.rejected, (state, action: PayloadAction<string>) => {
+        .addCase(addAnimal.rejected, (state, action: PayloadAction<unknown>) => {
             state.loading = false;
             state.error = action.payload;
         })
