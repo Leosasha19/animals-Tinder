@@ -1,14 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux.ts';
 import {
-  addAnimal,
-  addComment,
-  Animal,
-  changeLikeStatus,
-  getAnimals,
-  selectAnimalsState,
-  selectCurrentAnimal,
-} from '../../features/AnimalDataSlice.ts';
+    addAnimal, addComment, changeLikeStatus,
+    fetchAllAnimals,
+    selectAnimalsState,
+    selectCurrentAnimal
+} from "../../features/AnimalDataSlice.ts";
 import './AnimalCard.scss';
 
 interface AnimalCardProps {
@@ -25,11 +22,11 @@ const AnimalCard: React.FC<AnimalCardProps> = ({ fetchAnimal }) => {
   const [showInput, setShowInput] = useState(false);
   const [inputValue, setInputValue] = useState('');
 
-  useEffect(() => {
-    dispatch(fetchAnimal());
-    dispatch(getAnimals());
-    setShowInput(false);
-  }, [dispatch, fetchAnimal]);
+    useEffect(() => {
+        dispatch(fetchAnimal());
+        dispatch(fetchAllAnimals());
+        setShowInput(false);
+    }, [dispatch, fetchAnimal]);
 
   useEffect(() => {
     if (blackList) {
