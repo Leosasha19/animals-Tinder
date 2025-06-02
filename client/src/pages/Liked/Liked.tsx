@@ -1,68 +1,81 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {useAppDispatch, useAppSelector} from "../../hooks/redux.ts";
-import {addAnimal, addRandomAnimal, getAnimals, selectAnimalsState} from "../../features/AnimalDataSlice.ts";
+import React, { useCallback, useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux.ts';
+import {
+  addRandomAnimal,
+  getAnimals,
+  selectAnimalsState,
+} from '../../features/AnimalDataSlice.ts';
 import './Liked.scss';
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 const Liked = () => {
+  const animalsState = useAppSelector(selectAnimalsState);
+  const dispatch = useAppDispatch();
+  const [oneRandomAnimal, setOneRandomAnimal] = useState(null);
+  const navigate = useNavigate();
 
-    const animalsState = useAppSelector(selectAnimalsState);
-    const dispatch = useAppDispatch();
-    const [oneRandomAnimal, setOneRandomAnimal] = useState(null);
-    const navigate = useNavigate();
+  useEffect(() => {
+    dispatch(getAnimals());
+  }, []);
 
-    useEffect(() => {
-        dispatch(getAnimals())
-    }, []);
+  useEffect(() => {
+    if (animalsState?.animals) {
+      const likedAnimalsData = animalsState.animals.filter(
+        (animal) => animal.like === true
+      );
+      if (likedAnimalsData.length > 0) {
+        const randomAn =
+          likedAnimalsData[Math.floor(Math.random() * likedAnimalsData.length)];
+        setOneRandomAnimal(randomAn);
+      }
+    }
+  }, [animalsState.animals]);
 
+  useEffect(() => {
+    if (oneRandomAnimal) {
+      const { id, urlimg, commentary, iscat, like } = oneRandomAnimal;
+      dispatch(
+        addRandomAnimal({
+          id: id,
+          imageURL: urlimg,
+          comment: commentary,
+          isACat: iscat,
+          like: like,
+        })
+      );
+    }
+  }, [oneRandomAnimal, dispatch]);
 
-    useEffect(() => {
-        if (animalsState?.animals) {
-            const likedAnimalsData = animalsState.animals.filter((animal) => animal.like === true);
-            if (likedAnimalsData.length > 0) {
-                const randomAn = likedAnimalsData[Math.floor(Math.random() * likedAnimalsData.length)];
-                setOneRandomAnimal(randomAn);
-            }
-        }
-    }, [animalsState.animals]);
+  const addCurrentAnimal = useCallback(() => {
+    if (animalsState?.animals) {
+      const likedAnimalsData = animalsState.animals.filter(
+        (animal) => animal.like === true
+      );
+      if (likedAnimalsData.length > 0) {
+        const randomAn =
+          likedAnimalsData[Math.floor(Math.random() * likedAnimalsData.length)];
+        setOneRandomAnimal(randomAn);
+      }
+    }
+  }, [animalsState]);
 
-    useEffect(() => {
-        if (oneRandomAnimal) {
-            const { id, urlimg, commentary, iscat, like } = oneRandomAnimal;
-            dispatch(addRandomAnimal({
-                id: id,
-                imageURL: urlimg,
-                comment: commentary,
-                isACat: iscat,
-                like: like,
-            }));
-        }
-    }, [oneRandomAnimal, dispatch]);
-
-
-    const addCurrentAnimal = useCallback(() => {
-        if (animalsState?.animals) {
-            const likedAnimalsData = animalsState.animals.filter((animal) => animal.like === true);
-            if (likedAnimalsData.length > 0) {
-                const randomAn = likedAnimalsData[Math.floor(Math.random() * likedAnimalsData.length)];
-                setOneRandomAnimal(randomAn);
-            }
-        }
-    },[animalsState])
-
-    return (
-        <div className={"mainContainer"}>
-            <button
-                onClick={() => {navigate('/')}}
-                className={"mainContainer__backButton"}>НАЗАД
-            </button>
-            <div className={"mainContainer__animalsBox"}>
-                <img src={animalsState.currentAnimal.imageURL || null} alt=""/>
-                <div>{animalsState.currentAnimal.comment}</div>
-                <button onClick={addCurrentAnimal}>Next</button>
-            </div>
-        </div>
-    );
+  return (
+    <div className={'mainContainer'}>
+      <button
+        onClick={() => {
+          navigate('/');
+        }}
+        className={'mainContainer__backButton'}
+      >
+        НАЗАД
+      </button>
+      <div className={'mainContainer__animalsBox'}>
+        <img src={animalsState.currentAnimal.imageURL || null} alt="" />
+        <div>{animalsState.currentAnimal.comment}</div>
+        <button onClick={addCurrentAnimal}>Next</button>
+      </div>
+    </div>
+  );
 };
 
 export default Liked;
