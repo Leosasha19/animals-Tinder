@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {useAppDispatch, useAppSelector} from "../../hooks/redux.ts";
 import {
     addAnimal, addComment, changeLikeStatus,
-    getAnimals,
+    fetchAllAnimals,
     selectAnimalsState,
     selectCurrentAnimal
 } from "../../features/AnimalDataSlice.ts";
@@ -22,7 +22,7 @@ const AnimalCard: React.FC<AnimalCardProps> = ({fetchAnimal}) => {
 
     useEffect(() => {
         dispatch(fetchAnimal());
-        dispatch(getAnimals());
+        dispatch(fetchAllAnimals());
         setShowInput(false);
     }, [dispatch, fetchAnimal]);
 

@@ -44,7 +44,7 @@ interface AnimalsResponseData {
     isLike: boolean;
 }
 
-export const getAnimals = createAsyncThunk("animals/getAnimals",
+export const fetchAllAnimals = createAsyncThunk("animals/fetchAllAnimals",
     async (_,{rejectWithValue}) => {
     try {
      const response = await axios.get("http://localhost:5001/animals")
@@ -53,7 +53,7 @@ export const getAnimals = createAsyncThunk("animals/getAnimals",
      return rejectWithValue(error.response?.data || "Ошибка при загрузки Animals из БД");
     }})
 
-export const getCatApi = createAsyncThunk("cats/getCatsApi",
+export const fetchRandomCat = createAsyncThunk("cats/fetchRandom",
    async (_, {rejectWithValue}) => {
     try {
         const response = await axios.get("https://api.thecatapi.com/v1/images/search?size=full")
@@ -62,7 +62,7 @@ export const getCatApi = createAsyncThunk("cats/getCatsApi",
         return rejectWithValue(error.response?.data || "Ошибка при получения кота из АПИ")
     }})
 
-export const getDogApi = createAsyncThunk("dogs/getDogsApi",
+export const fetchRandomDog = createAsyncThunk("dogs/fetchRandom",
     async (_, {rejectWithValue}) => {
     try {
         const response = await axios.get("https://dog.ceo/api/breeds/image/random")
@@ -106,21 +106,21 @@ export const AnimalsStateSlice = createSlice({
   },
  extraReducers: (builder) => {
     builder
-        .addCase(getAnimals.pending, (state) => {
+        .addCase(fetchAllAnimals.pending, (state) => {
             state.loading = true;
         })
-        .addCase(getAnimals.fulfilled, (state, action: PayloadAction<AnimalsResponseData[]>) => {
+        .addCase(fetchAllAnimals.fulfilled, (state, action: PayloadAction<AnimalsResponseData[]>) => {
             state.loading = false;
             state.animals = action.payload
      })
-        .addCase(getAnimals.rejected, (state, action: PayloadAction<unknown>) => {
+        .addCase(fetchAllAnimals.rejected, (state, action: PayloadAction<unknown>) => {
             state.loading = false;
             state.error = action.payload;
         })
-        .addCase(getCatApi.pending, (state) => {
+        .addCase(fetchRandomCat.pending, (state) => {
             state.loading = true;
         })
-        .addCase(getCatApi.fulfilled, (state, action: PayloadAction<CatResponseData>) => {
+        .addCase(fetchRandomCat.fulfilled, (state, action: PayloadAction<CatResponseData>) => {
             state.loading = false;
             state.currentAnimal = {
                 id: null,
@@ -130,10 +130,10 @@ export const AnimalsStateSlice = createSlice({
                 isLike: null,
             };
         })
-        .addCase(getDogApi.pending, (state) => {
+        .addCase(fetchRandomDog.pending, (state) => {
             state.loading = true;
         })
-        .addCase(getDogApi.fulfilled, (state, action: PayloadAction<DogResponeData>) => {
+        .addCase(fetchRandomDog.fulfilled, (state, action: PayloadAction<DogResponeData>) => {
             state.loading = false;
             state.currentAnimal = {
                 id: null,
@@ -143,11 +143,11 @@ export const AnimalsStateSlice = createSlice({
                 isLike: null,
             }
         })
-        .addCase(getDogApi.rejected, (state, action: PayloadAction<unknown>) => {
+        .addCase(fetchRandomDog.rejected, (state, action: PayloadAction<unknown>) => {
             state.loading = false;
             state.error = action.payload;
         })
-        .addCase(getCatApi.rejected, (state, action: PayloadAction<unknown>) => {
+        .addCase(fetchRandomCat.rejected, (state, action: PayloadAction<unknown>) => {
             state.loading = false;
             state.error = action.payload;
         })
@@ -168,4 +168,4 @@ export const AnimalsStateSlice = createSlice({
 export const {changeLikeStatus, addComment, addRandomAnimal} = AnimalsStateSlice.actions;
 export default AnimalsStateSlice.reducer;
 export const selectAnimalsState = (state: RootState) => state.animalsState || initialState;
-export const selectCurrentAnimal = (state: RootState) => state.currentAnimalState.currentAnimal;
+export const selectCurrentAnimal = (state: RootState) => state.animalsState.currentAnimal;

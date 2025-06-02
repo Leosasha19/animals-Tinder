@@ -1,6 +1,6 @@
 import AnimalCard from "../../components/AnimalCard/AnimalCard.tsx";
 import React, {useState} from "react";
-import {getCatApi, getDogApi, selectAnimalsState} from "../../features/AnimalDataSlice.ts";
+import {fetchRandomCat, fetchRandomDog, selectAnimalsState} from "../../features/AnimalDataSlice.ts";
 import {useNavigate} from "react-router-dom";
 import {useAppSelector} from "../../hooks/redux.ts";
 import './MainPage.scss'
@@ -35,7 +35,7 @@ const MainPage = () => {
                         </button>
                     </div>
                     <div className={"mainContainer__animalCard"}>
-                        <AnimalCard fetchAnimal={isCat ? getCatApi : getDogApi}/>
+                        <AnimalCard fetchAnimal={isCat ? fetchRandomCat : fetchRandomDog}/>
                     </div>
                 </>
             )}
