@@ -85,7 +85,7 @@ const AnimalCard = ({ currentAnimal, moodHandler, isBlackList }: AnimalCardProps
             )}
           </div>
         </>
-      )}
+      )
     </div>
   );
 };
