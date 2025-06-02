@@ -1,54 +1,34 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux.ts';
+import { useCallback, useState, JSX } from 'react';
+import { useAppDispatch } from '../../hooks/redux.ts';
 import {
-    addAnimal, addComment, changeLikeStatus,
-    fetchAllAnimals,
-    selectAnimalsState,
-    selectCurrentAnimal
+    addAnimal, addComment, Animal, changeLikeStatus,
 } from "../../features/AnimalDataSlice.ts";
 import './AnimalCard.scss';
 
 interface AnimalCardProps {
-  fetchAnimal: () => Promise<Animal>;
+  currentAnimal: Animal;
+  moodHandler: () => void;
+  isBlackList: boolean;
 }
 
-const AnimalCard: React.FC<AnimalCardProps> = ({ fetchAnimal }) => {
+const AnimalCard = ({ currentAnimal, moodHandler, isBlackList }: AnimalCardProps): JSX.Element => {
   const dispatch = useAppDispatch();
-  const animalsState = useAppSelector(selectAnimalsState);
-  const currentAnimal = useAppSelector(selectCurrentAnimal);
-  const blackList = animalsState.animals.some(
-    (animal) => animal.imageURL === currentAnimal?.imageURL && !animal.isLike
-  );
+  const { imageURL, isCat } = currentAnimal;
+
   const [showInput, setShowInput] = useState(false);
   const [inputValue, setInputValue] = useState('');
 
-    useEffect(() => {
-        dispatch(fetchAnimal());
-        dispatch(fetchAllAnimals());
-        setShowInput(false);
-    }, [dispatch, fetchAnimal]);
-
-  useEffect(() => {
-    if (blackList) {
-      dispatch(fetchAnimal());
-    }
-  }, [blackList, dispatch]);
 
   const likeHandler = useCallback(
-    (isLike: boolean, comment: string) => {
-      dispatch(changeLikeStatus(true));
-      dispatch(addComment(comment));
-      if (currentAnimal) {
+    (isLike: boolean, comment?: string) => {
         dispatch(
           addAnimal({
-            imageURL: currentAnimal.imageURL,
-            comment: comment,
-            isCat: currentAnimal.isCat,
-            isLike: isLike,
+            imageURL,
+            comment: comment ?? '',
+            isCat,
+            isLike,
           })
         );
-      }
-      dispatch(fetchAnimal());
       setShowInput(false);
       setInputValue('');
     },
@@ -57,11 +37,9 @@ const AnimalCard: React.FC<AnimalCardProps> = ({ fetchAnimal }) => {
 
   return (
     <div className="AnimalCard">
-      {animalsState.error ? (
-        <div className="error-message">{'Упс... Похоже что то сломалось'}</div>
-      ) : (
+      (
         <>
-          {!blackList && currentAnimal && (
+          {!isBlackList && (
             <img
               className="AnimalCard__picture"
               src={currentAnimal.imageURL}
@@ -78,7 +56,7 @@ const AnimalCard: React.FC<AnimalCardProps> = ({ fetchAnimal }) => {
               }
             ></button>
             <button
-              onClick={() => dispatch(fetchAnimal())}
+              onClick={moodHandler}
               className={
                 showInput
                   ? 'AnimalCard__estimateBoxNone'
@@ -86,7 +64,7 @@ const AnimalCard: React.FC<AnimalCardProps> = ({ fetchAnimal }) => {
               }
             ></button>
             <button
-              onClick={() => likeHandler(false, inputValue)}
+              onClick={() => likeHandler(false)}
               className={
                 showInput
                   ? 'AnimalCard__estimateBoxNone'

@@ -96,7 +96,7 @@ export const addAnimal = createAsyncThunk(
       isCat,
       isLike,
     }: { imageURL: string; comment: string; isCat: boolean; isLike: boolean },
-    { rejectWithValue }
+    { rejectWithValue, dispatch }
   ) => {
     try {
       await axios.post('http://localhost:5001/animals', {
@@ -105,6 +105,7 @@ export const addAnimal = createAsyncThunk(
         isCat,
         isLike,
       });
+      isCat ? dispatch(fetchRandomCat()) : dispatch(fetchRandomDog())
     } catch (error) {
       return rejectWithValue(
         error.response?.data || 'Ошибка добавления животного в БД'
