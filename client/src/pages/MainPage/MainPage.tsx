@@ -6,14 +6,14 @@ import {useAppSelector} from "../../hooks/redux.ts";
 import './MainPage.scss'
 
 const MainPage = () => {
-    const navigate = useNavigate();
-    const animalState = useAppSelector(selectAnimalsState)
-    const [isCat, setIsCat] = useState(true);
+  const navigate = useNavigate();
+  const animalState = useAppSelector(selectAnimalsState);
+  const [isCat, setIsCat] = useState(true);
 
-    const goLikedPage = () => {
-        navigate('/liked')
-    }
-
+  const goLikedPage = () => {
+    navigate('/liked');
+  };
+  
     return (
         <div className={"mainContainer"}>
             {animalState.error ? (

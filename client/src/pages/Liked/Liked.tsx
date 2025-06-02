@@ -2,19 +2,36 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {useAppDispatch, useAppSelector} from "../../hooks/redux.ts";
 import { addRandomAnimal, fetchAllAnimals, selectAnimalsState} from "../../features/AnimalDataSlice.ts";
 import './Liked.scss';
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 const Liked = () => {
+  const animalsState = useAppSelector(selectAnimalsState);
+  const dispatch = useAppDispatch();
+  const [oneRandomAnimal, setOneRandomAnimal] = useState(null);
+  const navigate = useNavigate();
 
-    const animalsState = useAppSelector(selectAnimalsState);
-    const dispatch = useAppDispatch();
-    const [oneRandomAnimal, setOneRandomAnimal] = useState(null);
-    const navigate = useNavigate();
+  useEffect(() => {
+    dispatch(getAnimals());
+  }, []);
 
     useEffect(() => {
         dispatch(fetchAllAnimals())
     }, []);
 
+  useEffect(() => {
+    if (oneRandomAnimal) {
+      const { id, urlimg, commentary, iscat, like } = oneRandomAnimal;
+      dispatch(
+        addRandomAnimal({
+          id: id,
+          imageURL: urlimg,
+          comment: commentary,
+          isACat: iscat,
+          like: like,
+        })
+      );
+    }
+  }, [oneRandomAnimal, dispatch]);
 
     useEffect(() => {
         if (animalsState?.animals) {
@@ -66,7 +83,6 @@ const Liked = () => {
                 )}
             </div>
         );
-
 };
 
 export default Liked;
