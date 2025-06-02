@@ -1,32 +1,69 @@
 import AnimalCard from "../../components/AnimalCard/AnimalCard.tsx";
-import React, {useState} from "react";
-import {fetchRandomCat, fetchRandomDog, selectAnimalsState} from "../../features/AnimalDataSlice.ts";
+import  {useState, useEffect} from "react";
+import {fetchRandomCat, fetchRandomDog, selectAnimalsState, fetchAllAnimals, selectCurrentAnimal} from "../../features/AnimalDataSlice.ts";
 import {useNavigate} from "react-router-dom";
-import {useAppSelector} from "../../hooks/redux.ts";
+import {useAppSelector, useAppDispatch} from "../../hooks/redux.ts";
 import './MainPage.scss'
 
 const MainPage = () => {
   const navigate = useNavigate();
-  const animalState = useAppSelector(selectAnimalsState);
+  const animalsState = useAppSelector(selectAnimalsState);
+  const currentAnimal = useAppSelector(selectCurrentAnimal);
+   const dispatch = useAppDispatch();
   const [isCat, setIsCat] = useState(true);
+
+    const isBlackList = animalsState.animals.some(
+    (animal) => animal.imageURL === currentAnimal?.imageURL && !animal.isLike
+  );
+
+    useEffect(() => {
+        dispatch(fetchRandomCat());
+        dispatch(fetchAllAnimals());
+        //   setShowInput(false);
+      }, [dispatch]);
+  
+    // useEffect(() => {
+    //   if (isBlackList) {
+    //     dispatch(fetchAnimal());
+    //   }
+    // }, [isBlackList, dispatch]);
 
   const goLikedPage = () => {
     navigate('/liked');
   };
+
+    const catHandler =() => {
+        dispatch(fetchRandomCat());
+        setIsCat(true);
+    }
+
+    const dogsHandler = () => {
+        dispatch(fetchRandomDog());
+        setIsCat(false);
+    }
+
+    const moodHandler = () => {
+        if (isCat) {
+            dispatch(fetchRandomCat())
+        } else {
+            dispatch(fetchRandomDog())
+        }
+    }
+
   
     return (
         <div className={"mainContainer"}>
-            {animalState.error ? (
+            {animalsState.error ? (
                 <div className="error-message">{"Упс... Похоже что то сломалось"}</div>
             ) : (
                 <>
                     <div className={"mainContainer__topLine"}>
                         <button
-                            onClick={() => setIsCat(true)}
+                            onClick={catHandler}
                             className={isCat ? "mainContainer__topLine__switchButtonsActive" : "mainContainer__topLine__switchButtons"}>CATS
                         </button>
                         <button
-                            onClick={() => setIsCat(false)}
+                            onClick={dogsHandler}
                             className={isCat ? "mainContainer__topLine__switchButtons" : "mainContainer__topLine__switchButtonsActive"}>DOGS
                         </button>
                         <button
@@ -34,8 +71,9 @@ const MainPage = () => {
                             className={"mainContainer__topLine__liked"}>❤️
                         </button>
                     </div>
+                    
                     <div className={"mainContainer__animalCard"}>
-                        <AnimalCard fetchAnimal={isCat ? fetchRandomCat : fetchRandomDog}/>
+                        {currentAnimal && <AnimalCard currentAnimal={currentAnimal} moodHandler={moodHandler} isBlackList={isBlackList}/>}
                     </div>
                 </>
             )}
