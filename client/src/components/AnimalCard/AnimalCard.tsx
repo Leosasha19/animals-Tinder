@@ -1,11 +1,16 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux.ts';
 import {
-    addAnimal, addComment, changeLikeStatus,
-    fetchAllAnimals,
-    selectAnimalsState,
-    selectCurrentAnimal
-} from "../../features/AnimalDataSlice.ts";
+  addAnimal,
+  addComment,
+  Animal,
+  changeLikeStatus,
+  fetchAllAnimals,
+  selectAnimalsState,
+  selectCurrentAnimal,
+} from '../../features/AnimalDataSlice.ts';
+import AnimalImage from './AnimalImage.tsx';
+import Button from '../Button/Button.tsx';
 import './AnimalCard.scss';
 
 interface AnimalCardProps {
@@ -22,11 +27,11 @@ const AnimalCard: React.FC<AnimalCardProps> = ({ fetchAnimal }) => {
   const [showInput, setShowInput] = useState(false);
   const [inputValue, setInputValue] = useState('');
 
-    useEffect(() => {
-        dispatch(fetchAnimal());
-        dispatch(fetchAllAnimals());
-        setShowInput(false);
-    }, [dispatch, fetchAnimal]);
+  useEffect(() => {
+    dispatch(fetchAnimal());
+    dispatch(fetchAllAnimals());
+    setShowInput(false);
+  }, [dispatch, fetchAnimal]);
 
   useEffect(() => {
     if (blackList) {
@@ -38,6 +43,7 @@ const AnimalCard: React.FC<AnimalCardProps> = ({ fetchAnimal }) => {
     (isLike: boolean, comment: string) => {
       dispatch(changeLikeStatus(true));
       dispatch(addComment(comment));
+      console.log(currentAnimal);
       if (currentAnimal) {
         dispatch(
           addAnimal({
@@ -62,37 +68,33 @@ const AnimalCard: React.FC<AnimalCardProps> = ({ fetchAnimal }) => {
       ) : (
         <>
           {!blackList && currentAnimal && (
-            <img
-              className="AnimalCard__picture"
-              src={currentAnimal.imageURL}
-              alt="Тут животное"
-            />
+            <AnimalImage imageURL={currentAnimal.imageURL} />
           )}
           <div className="AnimalCard__estimateBox">
-            <button
+            <Button
               onClick={() => setShowInput(true)}
               className={
                 showInput
                   ? 'AnimalCard__estimateBoxNone'
                   : 'AnimalCard__estimateBox__like'
               }
-            ></button>
-            <button
+            />
+            <Button
               onClick={() => dispatch(fetchAnimal())}
               className={
                 showInput
                   ? 'AnimalCard__estimateBoxNone'
                   : 'AnimalCard__estimateBox__mood'
               }
-            ></button>
-            <button
+            />
+            <Button
               onClick={() => likeHandler(false, inputValue)}
               className={
                 showInput
                   ? 'AnimalCard__estimateBoxNone'
                   : 'AnimalCard__estimateBox__dislike'
               }
-            ></button>
+            />
             {showInput && (
               <div className="popUpBox">
                 <input
