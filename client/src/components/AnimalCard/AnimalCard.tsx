@@ -12,6 +12,7 @@ import {
 import AnimalImage from './AnimalImage.tsx';
 import Button from '../Button/Button.tsx';
 import './AnimalCard.scss';
+import CommentPopup from './CommentPopup.tsx';
 
 interface AnimalCardProps {
   fetchAnimal: () => Promise<Animal>;
@@ -43,7 +44,6 @@ const AnimalCard: React.FC<AnimalCardProps> = ({ fetchAnimal }) => {
     (isLike: boolean, comment: string) => {
       dispatch(changeLikeStatus(true));
       dispatch(addComment(comment));
-      console.log(currentAnimal);
       if (currentAnimal) {
         dispatch(
           addAnimal({
@@ -96,16 +96,15 @@ const AnimalCard: React.FC<AnimalCardProps> = ({ fetchAnimal }) => {
               }
             />
             {showInput && (
-              <div className="popUpBox">
-                <input
-                  onChange={(event) => setInputValue(event.target.value)}
-                  placeholder="Комментарий..."
-                  type="text"
-                />
-                <button onClick={() => likeHandler(true, inputValue)}>
-                  Добавить в избранное
-                </button>
-              </div>
+              <CommentPopup
+                className="popUpBox"
+                onChange={(event) => setInputValue(event.target.value)}
+                onClick={() => likeHandler(true, inputValue)}
+                placeholder="Комментарий..."
+                type="text"
+              >
+                Добавить в избранное
+              </CommentPopup>
             )}
           </div>
         </>
