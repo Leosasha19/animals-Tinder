@@ -44,8 +44,9 @@ interface AnimalsResponseData {
   isLike: boolean;
 }
 
-export const fetchAllAnimals = createAsyncThunk("animals/fetchAllAnimals",
-    async (_,{rejectWithValue}) => {
+export const fetchAllAnimals = createAsyncThunk(
+  'animals/fetchAllAnimals',
+  async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get('http://localhost:5001/animals');
       return response.data;
@@ -57,8 +58,9 @@ export const fetchAllAnimals = createAsyncThunk("animals/fetchAllAnimals",
   }
 );
 
-export const fetchRandomCat = createAsyncThunk("cats/fetchRandom",
-   async (_, {rejectWithValue}) => {
+export const fetchRandomCat = createAsyncThunk(
+  'cats/fetchRandom',
+  async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get(
         'https://api.thecatapi.com/v1/images/search?size=full'
@@ -72,8 +74,9 @@ export const fetchRandomCat = createAsyncThunk("cats/fetchRandom",
   }
 );
 
-export const fetchRandomDog = createAsyncThunk("dogs/fetchRandom",
-    async (_, {rejectWithValue}) => {
+export const fetchRandomDog = createAsyncThunk(
+  'dogs/fetchRandom',
+  async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get(
         'https://dog.ceo/api/breeds/image/random'
@@ -133,67 +136,87 @@ export const AnimalsStateSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-        .addCase(fetchAllAnimals.pending, (state) => {
-            state.loading = true;
-        })
-        .addCase(fetchAllAnimals.fulfilled, (state, action: PayloadAction<AnimalsResponseData[]>) => {
-            state.loading = false;
-            state.animals = action.payload
-     })
-        .addCase(fetchAllAnimals.rejected, (state, action: PayloadAction<unknown>) => {
-            state.loading = false;
-            state.error = action.payload;
-        })
-        .addCase(fetchRandomCat.pending, (state) => {
-            state.loading = true;
-        })
-        .addCase(fetchRandomCat.fulfilled, (state, action: PayloadAction<CatResponseData>) => {
-            state.loading = false;
-            state.currentAnimal = {
-                id: null,
-                imageURL: action.payload.url,
-                comment: '',
-                isCat: true,
-                isLike: null,
-            };
-        })
-        .addCase(fetchRandomDog.pending, (state) => {
-            state.loading = true;
-        })
-        .addCase(fetchRandomDog.fulfilled, (state, action: PayloadAction<DogResponeData>) => {
-            state.loading = false;
-            state.currentAnimal = {
-                id: null,
-                imageURL: action.payload.message,
-                comment: '',
-                isCat: false,
-                isLike: null,
-            }
-        })
-        .addCase(fetchRandomDog.rejected, (state, action: PayloadAction<unknown>) => {
-            state.loading = false;
-            state.error = action.payload;
-        })
-        .addCase(fetchRandomCat.rejected, (state, action: PayloadAction<unknown>) => {
-            state.loading = false;
-            state.error = action.payload;
-        })
-        .addCase(addAnimal.pending, (state) => {
-            state.loading = true;
-        })
-        .addCase(addAnimal.fulfilled, (state) => {
-            state.loading = false;
-            state.currentAnimal = initialState.currentAnimal;
-        })
-        .addCase(addAnimal.rejected, (state, action: PayloadAction<unknown>) => {
-            state.loading = false;
-            state.error = action.payload;
-        })
- }
-})
+      .addCase(fetchAllAnimals.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(
+        fetchAllAnimals.fulfilled,
+        (state, action: PayloadAction<AnimalsResponseData[]>) => {
+          state.loading = false;
+          state.animals = action.payload;
+        }
+      )
+      .addCase(
+        fetchAllAnimals.rejected,
+        (state, action: PayloadAction<unknown>) => {
+          state.loading = false;
+          state.error = action.payload;
+        }
+      )
+      .addCase(fetchRandomCat.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(
+        fetchRandomCat.fulfilled,
+        (state, action: PayloadAction<CatResponseData>) => {
+          state.loading = false;
+          state.currentAnimal = {
+            id: null,
+            imageURL: action.payload.url,
+            comment: '',
+            isCat: true,
+            isLike: null,
+          };
+        }
+      )
+      .addCase(fetchRandomDog.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(
+        fetchRandomDog.fulfilled,
+        (state, action: PayloadAction<DogResponeData>) => {
+          state.loading = false;
+          state.currentAnimal = {
+            id: null,
+            imageURL: action.payload.message,
+            comment: '',
+            isCat: false,
+            isLike: null,
+          };
+        }
+      )
+      .addCase(
+        fetchRandomDog.rejected,
+        (state, action: PayloadAction<unknown>) => {
+          state.loading = false;
+          state.error = action.payload;
+        }
+      )
+      .addCase(
+        fetchRandomCat.rejected,
+        (state, action: PayloadAction<unknown>) => {
+          state.loading = false;
+          state.error = action.payload;
+        }
+      )
+      .addCase(addAnimal.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(addAnimal.fulfilled, (state) => {
+        state.loading = false;
+        state.currentAnimal = initialState.currentAnimal;
+      })
+      .addCase(addAnimal.rejected, (state, action: PayloadAction<unknown>) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
+  },
+});
 
 export const { changeLikeStatus, addComment, addRandomAnimal } =
   AnimalsStateSlice.actions;
 export default AnimalsStateSlice.reducer;
-export const selectAnimalsState = (state: RootState) => state.animalsState || initialState;
-export const selectCurrentAnimal = (state: RootState) => state.animalsState.currentAnimal;
+export const selectAnimalsState = (state: RootState) =>
+  state.animalsState || initialState;
+export const selectCurrentAnimal = (state: RootState) =>
+  state.animalsState.currentAnimal;
