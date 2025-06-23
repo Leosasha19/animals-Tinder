@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux.ts';
 import {
   addRandomAnimal,
@@ -7,6 +7,7 @@ import {
 } from '../../features/AnimalDataSlice.ts';
 import { useNavigate } from 'react-router-dom';
 import Button from '../../components/Button/Button.tsx';
+import AnimalCardPreview from '../../components/AnimalCard/AnimalCardPreview.tsx';
 import './Liked.scss';
 
 const Liked = () => {
@@ -86,11 +87,12 @@ const Liked = () => {
         НАЗАД
       </Button>
       {animalsState.currentAnimal && (
-        <div className={'mainContainer__animalsBox'}>
-          <img src={animalsState.currentAnimal.imageURL || null} alt="" />
-          <div>{animalsState.currentAnimal.comment}</div>
-          <Button onClick={addCurrentAnimal}>Next</Button>
-        </div>
+        <AnimalCardPreview
+          className={'mainContainer__animalsBox'}
+          imgURL={animalsState.currentAnimal.imageURL}
+          comment={animalsState.currentAnimal.comment}
+          onNext={addCurrentAnimal}
+        />
       )}
     </div>
   );
