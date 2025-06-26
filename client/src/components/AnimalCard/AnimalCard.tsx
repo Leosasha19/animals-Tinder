@@ -1,65 +1,36 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux.ts';
-import {
-  addAnimal,
-  addComment,
-  Animal,
-  changeLikeStatus,
-  fetchAllAnimals,
-  selectAnimalsState,
-  selectCurrentAnimal,
-} from '../../features/AnimalDataSlice.ts';
+import React from 'react';
+import { useAppDispatch } from '../../hooks/redux.ts';
+import { Animal, AnimalsState } from '../../features/AnimalDataSlice.ts';
 import AnimalImage from './AnimalImage.tsx';
 import Button from '../Button/Button.tsx';
-import './AnimalCard.scss';
 import CommentPopup from './CommentPopup.tsx';
+import { AsyncThunk } from '@reduxjs/toolkit';
+import './AnimalCard.scss';
 
 interface AnimalCardProps {
-  fetchAnimal: () => Promise<Animal>;
+  fetchAnimal: AsyncThunk<Animal, void, {}>;
+  currentAnimal: Animal | null;
+  setShowInput: (value: boolean) => void;
+  showInput: boolean;
+  setInputValue: (value: string) => void;
+  inputValue: string;
+  likeHandler: (isLike: boolean, comment: string) => void;
+  blackList: boolean;
+  animalsState: AnimalsState;
 }
 
-const AnimalCard: React.FC<AnimalCardProps> = ({ fetchAnimal }) => {
+const AnimalCard: React.FC<AnimalCardProps> = ({
+  fetchAnimal,
+  currentAnimal,
+  setShowInput,
+  showInput,
+  setInputValue,
+  inputValue,
+  likeHandler,
+  blackList,
+  animalsState,
+}) => {
   const dispatch = useAppDispatch();
-  const animalsState = useAppSelector(selectAnimalsState);
-  const currentAnimal = useAppSelector(selectCurrentAnimal);
-  const blackList = animalsState.animals.some(
-    (animal) => animal.imageURL === currentAnimal?.imageURL && !animal.isLike
-  );
-  const [showInput, setShowInput] = useState(false);
-  const [inputValue, setInputValue] = useState('');
-
-  useEffect(() => {
-    dispatch(fetchAnimal());
-    dispatch(fetchAllAnimals());
-    setShowInput(false);
-  }, [dispatch, fetchAnimal]);
-
-  useEffect(() => {
-    if (blackList) {
-      dispatch(fetchAnimal());
-    }
-  }, [blackList, dispatch]);
-
-  const likeHandler = useCallback(
-    (isLike: boolean, comment: string) => {
-      dispatch(changeLikeStatus(true));
-      dispatch(addComment(comment));
-      if (currentAnimal) {
-        dispatch(
-          addAnimal({
-            imageURL: currentAnimal.imageURL,
-            comment: comment,
-            isCat: currentAnimal.isCat,
-            isLike: isLike,
-          })
-        );
-      }
-      dispatch(fetchAnimal());
-      setShowInput(false);
-      setInputValue('');
-    },
-    [currentAnimal]
-  );
 
   return (
     <div className="AnimalCard">
