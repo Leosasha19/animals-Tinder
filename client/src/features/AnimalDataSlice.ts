@@ -4,6 +4,8 @@ import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import { RootState } from '../redux/store/store.ts';
 
+const api = import.meta.env.VITE_API_URL;
+
 export interface Animal {
   id: number;
   imageURL: string;
@@ -52,7 +54,7 @@ export const fetchAllAnimals = createAsyncThunk<
   { rejectValue: ApiError }
 >('animals/fetchAllAnimals', async (_, { rejectWithValue }) => {
   try {
-    const response = await axios.get<Animal[]>('http://localhost:5001/animals');
+    const response = await axios.get<Animal[]>(`${api}/animals`);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -114,7 +116,7 @@ export const addAnimal = createAsyncThunk<
   { rejectValue: ApiError }
 >('animal/addAnimal', async (animalData, { rejectWithValue }) => {
   try {
-    await axios.post<NewAnimal>('http://localhost:5001/animals', animalData);
+    await axios.post<NewAnimal>(`${api}/animals`, animalData);
   } catch (error) {
     if (axios.isAxiosError(error)) {
       return rejectWithValue({
