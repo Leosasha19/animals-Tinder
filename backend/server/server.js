@@ -1,10 +1,12 @@
 import cors from 'cors';
+import dotenv from 'dotenv';
 import express from 'express';
 import { Sequelize } from 'sequelize';
 
 import AnimalModel from './models/animal.js';
 
 const app = express();
+dotenv.config();
 
 app.use(
   cors({
@@ -16,10 +18,16 @@ app.use(
 
 app.use(express.json());
 
-const sequelize = new Sequelize('database_animals', 'postgres', '1234', {
-  host: 'localhost',
-  dialect: 'postgres',
-});
+const sequelize = new Sequelize(
+  process.env.DB_NAME,
+  process.env.DB_USERNAME,
+  process.env.DB_PASSWORD,
+  {
+    host: process.env.DB_HOST,
+    dialect: process.env.DB_DIALECT,
+    port: process.env.DB_PORT,
+  }
+);
 
 sequelize
   .authenticate()
