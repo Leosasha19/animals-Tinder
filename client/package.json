@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "devserv": "npx ts-node ../backend/server/server.js",
-    "build": "../my-react-app/node_modules/.bin/tsc -b && vite build",
+    "build": "tsc && vite build",
     "lint": "../my-react-app/node_modules/.bin/eslint ",
     "preview": "../my-react-app/node_modules/.bin/vite preview"
   },
