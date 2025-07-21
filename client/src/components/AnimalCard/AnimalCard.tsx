@@ -1,11 +1,14 @@
 import React from 'react';
-import { useAppDispatch } from '../../hooks/redux.ts';
-import { Animal, AnimalsState } from '../../features/AnimalDataSlice.ts';
-import AnimalImage from './AnimalImage.tsx';
-import Button from '../Button/Button.tsx';
-import CommentPopup from './CommentPopup.tsx';
+
 import { AsyncThunk } from '@reduxjs/toolkit';
+
+import { Animal, AnimalsState } from '../../features/AnimalDataSlice.ts';
+import { useAppDispatch } from '../../hooks/redux.ts';
+import Button from '../Button/Button.tsx';
+
 import './AnimalCard.scss';
+import AnimalImage from './AnimalImage.tsx';
+import CommentPopup from './CommentPopup.tsx';
 
 interface AnimalCardProps {
   fetchAnimal: AsyncThunk<Animal, void, {}>;

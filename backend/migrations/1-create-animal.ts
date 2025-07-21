@@ -7,31 +7,31 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       urlimg: {
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT,
       },
       commentary: {
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT,
       },
       iscat: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
       },
       like: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Animals');
-  }
+  },
 };

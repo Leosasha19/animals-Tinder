@@ -1,13 +1,15 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux.ts';
+import { useNavigate } from 'react-router-dom';
+
+import AnimalCardPreview from '../../components/AnimalCard/AnimalCardPreview.tsx';
+import Button from '../../components/Button/Button.tsx';
 import {
   addRandomAnimal,
   fetchAllAnimals,
   selectAnimalsState,
 } from '../../features/AnimalDataSlice.ts';
-import { useNavigate } from 'react-router-dom';
-import Button from '../../components/Button/Button.tsx';
-import AnimalCardPreview from '../../components/AnimalCard/AnimalCardPreview.tsx';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux.ts';
+
 import './Liked.scss';
 
 const Liked = () => {

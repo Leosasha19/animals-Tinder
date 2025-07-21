@@ -1,5 +1,8 @@
-import AnimalCard from '../../components/AnimalCard/AnimalCard.tsx';
 import { useCallback, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import AnimalCard from '../../components/AnimalCard/AnimalCard.tsx';
+import TopNavigation from '../../components/TopNavigation/TopNavigation.tsx';
 import {
   addAnimal,
   addComment,
@@ -10,9 +13,8 @@ import {
   selectAnimalsState,
   selectCurrentAnimal,
 } from '../../features/AnimalDataSlice.ts';
-import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux.ts';
-import TopNavigation from '../../components/TopNavigation/TopNavigation.tsx';
+
 import './MainPage.scss';
 
 const MainPage = () => {

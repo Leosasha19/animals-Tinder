@@ -1,6 +1,6 @@
-import {Model} from 'sequelize';
+import { Model } from 'sequelize';
 
-export default  (sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
   class Animal extends Model {
     /**
      * Helper method for defining associations.
@@ -11,26 +11,29 @@ export default  (sequelize, DataTypes) => {
       // define association here
     }
   }
-  Animal.init({
-    urlimg: {
-      type: DataTypes.TEXT,
-      allowNull: false
+  Animal.init(
+    {
+      urlimg: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
+      commentary: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
+      iscat: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+      },
+      like: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+      },
     },
-    commentary: {
-      type: DataTypes.TEXT,
-      allowNull: false
-    },
-    iscat: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false
-    },
-    like: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false
+    {
+      sequelize,
+      modelName: 'Animal',
     }
-  }, {
-    sequelize,
-    modelName: 'Animal',
-  });
+  );
   return Animal;
 };

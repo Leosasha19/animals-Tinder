@@ -1,6 +1,7 @@
-import express from 'express';
 import cors from 'cors';
+import express from 'express';
 import { Sequelize } from 'sequelize';
+
 import AnimalModel from './models/animal.js';
 
 const app = express();
@@ -70,7 +71,7 @@ app.post('/animals', async (req, res) => {
   }
 });
 
-const PORT = 5001;
+const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);
 });

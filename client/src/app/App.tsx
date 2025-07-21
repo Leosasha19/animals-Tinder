@@ -1,6 +1,8 @@
-import MainPage from '../pages/MainPage/MainPage.tsx';
 import { Route, Routes } from 'react-router-dom';
+
 import Liked from '../pages/Liked/Liked.tsx';
+import MainPage from '../pages/MainPage/MainPage.tsx';
+
 import './App.scss';
 
 function App() {
