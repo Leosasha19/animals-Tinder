@@ -34,6 +34,5 @@
 - Sequelize
 - PostgreSQL
 
-## 🖼️ Превью интерфейса
-
-![Превью интерфейса](client/src/assets/screenshot.png)
+---
+🔗 Посмотреть приложение вживую: [https://animals-tinder-client.onrender.com/](https://animals-tinder-client.onrender.com/)
