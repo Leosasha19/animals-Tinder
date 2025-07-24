@@ -206,7 +206,6 @@ export const AnimalsStateSlice = createSlice({
       })
       .addCase(addAnimal.fulfilled, (state) => {
         state.loading = false;
-        state.currentAnimal = initialState.currentAnimal;
       })
       .addCase(addAnimal.rejected, (state, action) => {
         state.loading = false;
