@@ -35,4 +35,5 @@
 - PostgreSQL
 
 ---
-🔗 Посмотреть приложение вживую: [https://animals-tinder-client.onrender.com/](https://animals-tinder-client.onrender.com/)
+🔗 Посмотреть приложение вживую: [🔗 Посмотреть приложение
+вживую](https://animals-tinder-client.onrender.com/)
